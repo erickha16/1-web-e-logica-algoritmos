@@ -1,10 +1,4 @@
-/*
-const numeros = [3, 1, 4, 2];
-numeros.sort((a, b) => a - b); //Orden ascendente
-console.log(numeros);
-*/
-
-//Proyecto de clase V1:
+//Proyecto de clase V2:
 /*
 PROBLEMÁTICA
 Imagina que eres parte del equipo encargado de crear una lista de compras utilizando un arreglo. Los usuarios deben poder añadir productos a la lista, eliminar productos y ver la lista completa de compras.
@@ -26,50 +20,84 @@ const agregarProducto = (producto) => {
   //5. Asegurarnos de no repetir elementos
   if (estaRepetido(producto)) {
     console.log(
-      `El producto "${producto}" ya se encunetra en la lista, no pueden existir repetidos`
+      `El producto "${producto.nombre}" ya se encunetra en la lista, no pueden existir repetidos`
     );
   } else {
     listaDeCompras.push(producto);
   }
 };
 
-//3.- (Opción de clase)
+//3.-
 const eliminarProducto = (productoAEliminar) => {
   let nuevoArray = listaDeCompras.filter(
-    (producto) => producto !== productoAEliminar
+    (producto) => producto.nombre !== productoAEliminar
   );
   listaDeCompras = nuevoArray;
 };
 
 //4.-
 const mostrarLista = () => {
+  console.log("------------- Lista de Productos -------------");
   listaDeCompras.forEach((producto) => {
-    console.log(` + ${producto}`);
+    console.log(` + ${producto.nombre}`);
   });
+  console.log("----------------------------------------------");
 };
 
 //5.- Función para no reptir elementos
 function estaRepetido(elemento) {
-  if (listaDeCompras.find((element) => element == elemento) == undefined) {
+  //   console.log(elemento);
+  const repetido = listaDeCompras.find(
+    (producto) => producto.nombre === elemento.nombre
+  );
+  if (repetido === undefined) {
     return false;
   } else {
     return true;
   }
 }
 
-agregarProducto("manzana");
-agregarProducto("pera");
-agregarProducto("pera");
-agregarProducto("piña");
-agregarProducto("fresa");
-agregarProducto("naranja");
-agregarProducto("naranja");
+//Trabajaremos con objetos
+agregarProducto({
+  nombre: "Manzana",
+  precio_mxn: 17,
+  categoria: "Alimentos",
+  disponible: true,
+});
 
-console.log(listaDeCompras);
+agregarProducto({
+  nombre: "Manzana",
+  precio_mxn: 50,
+  categoria: "Alimentos",
+  disponible: true,
+});
 
-eliminarProducto("fresa");
-// console.log(listaDeCompras);
+agregarProducto({
+  nombre: "Pera",
+  precio_mxn: 15,
+  categoria: "Alimentos",
+  disponible: true,
+});
+agregarProducto({
+  nombre: "Sandia",
+  precio_mxn: 40,
+  categoria: "Alimentos",
+  disponible: true,
+});
+agregarProducto({
+  nombre: "Sandia",
+  precio_mxn: 50,
+  categoria: "Alimentos",
+  disponible: true,
+});
+
+let nuevoProducto = {
+  nombre: "ESP32",
+  precio_mxn: 120,
+  categoria: "Electronica",
+  disponible: true,
+};
+
+agregarProducto(nuevoProducto);
+
 mostrarLista();
-
-// console.log(estaRepetido("roro"));
-// console.log(listaDeCompras.find((element) => element == "picafresa"));
