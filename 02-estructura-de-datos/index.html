@@ -4,11 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estructura de datos</title>
+    <title>Lista de Compras</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <script type="module" src="./app.js"></script>
+    <div class="container">
+        <h1>Lista de Compras</h1>
+
+        <!-- Formulario para agregar productos -->
+        <form id="formAgregar">
+            <input type="text" id="nombreProducto" placeholder="Nombre del producto" required>
+            <input type="number" id="precioProducto" placeholder="Precio (MXN)" required>
+            <input type="text" id="categoriaProducto" placeholder="Categoría" required>
+            <button type="submit">Agregar Producto</button>
+        </form>
+
+        <!-- Lista de productos -->
+        <div id="listaProductos">
+            <h2>Productos en la lista:</h2>
+            <ul id="lista"></ul>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
 </body>
 
 </html>
