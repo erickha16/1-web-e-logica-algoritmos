@@ -4,11 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Online</title>
+    <title>Tienda Online - Productos y Estadísticas</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+    <div class="container">
+        <h1>Tienda Online</h1>
+
+        <div class="product-section">
+            <div class="filter-controls">
+                <h2>Todos los Productos</h2>
+                <div class="filters">
+                    <select id="price-filter" class="filter-select">
+                        <option value="all">Todos los precios</option>
+                        <option value="under100">Menor a $100</option>
+                        <option value="100to500">$100 - $500</option>
+                        <option value="over500">Mayores a $500</option>
+                    </select>
+
+                    <select id="category-filter" class="filter-select">
+                        <option value="all">Todas las categorías</option>
+                        <!-- Las opciones se llenarán con JavaScript -->
+                    </select>
+                </div>
+            </div>
+            <div class="product-grid" id="products-container"></div>
+        </div>
+
+        <div class="stats-section">
+            <h2>Estadísticas de la Tienda</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Valor total del inventario</h3>
+                    <p id="total-value">$0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>¿Hay productos de electrónica?</h3>
+                    <p id="electronics-available">No</p>
+                </div>
+                <div class="stat-card">
+                    <h3>¿Todos cuestan más de $100?</h3>
+                    <p id="all-over-100">No</p>
+                </div>
+                <div class="stat-card">
+                    <h3>¿Venden zapatos?</h3>
+                    <p id="shoes-available">No</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="./app.js"></script>
 </body>

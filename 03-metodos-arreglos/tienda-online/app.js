@@ -1,68 +1,115 @@
-/* 
-Problema: Filtro y Orden de Productos de una Tienda Online
-Eres el encargado de gestionar los datos de una tienda online. Tienes un listado de productos con información como nombre, precio y categoría. 
-Tu tarea será filtrar los productos por precio, ordenarlos alfabéticamente y generar una lista con los nombres.
-
-Instrucciones para resolver el problema:
- - Crea un arreglo de objetos con al menos 5 productos, cada uno con las propiedades nombre, precio y categoría. Puedes ver el código de ejemplo para este paso en el siguiente enlace: 
-- https://gist.github.com/heladio-devf-mx/a2127c7992384fd0fd66893db47ea506
-- Usa filter() para obtener los productos que cuesten menos de $100.
-- Usa sort() para ordenar esos productos alfabéticamente por su nombre.
-- Usa map() para generar un nuevo arreglo que contenga solo los nombres de los productos.
-- Muestra los resultados de la aplicación de cada métiodo en consola.
-- (Oppcional) Incluye alguno de los métodos faltantes (reduce, some, every, includes, etc.) con algún caso de uso en este ejemplo, usa tu creatividad.
- */
-
-//1- arreglo de objetos con al menos 5 productos, cada uno con las propiedades nombre, precio y categoría.
+// Datos de productos
 const productos = [
   { nombre: "Camiseta", precio: 15, categoria: "Ropa" },
   { nombre: "Laptop", precio: 800, categoria: "Electrónica" },
   { nombre: "Libro", precio: 12, categoria: "Educación" },
   { nombre: "Zapatos", precio: 50, categoria: "Ropa" },
   { nombre: "Celular", precio: 600, categoria: "Electrónica" },
+  { nombre: "impresora 3D", precio: 1200, categoria: "Electrónica" },
+  { nombre: "Mesa", precio: 150, categoria: "Domestico" },
+  { nombre: "Mochila", precio: 400, categoria: "Útiles" },
 ];
 
-//2- Usa filter() para obtener los productos que cuesten menos de $100.
-let productosMenoresA100 = productos.filter(
-  (producto) => producto.precio < 100
-);
-
-//3- Usa sort() para ordenar esos productos alfabéticamente por su nombre.
+//Ordena los productos alfabéticamente
 productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
-//4- Usa map() para generar un nuevo arreglo que contenga solo los nombres de los productos.
-const nombreProductos = productos.map((productos) => productos.nombre);
+// Elementos del DOM
+const productsContainer = document.getElementById("products-container");
+const priceFilter = document.getElementById("price-filter");
+const categoryFilter = document.getElementById("category-filter");
 
-//5- Muestra los resultados de la aplicación de cada métiodo en consola.
-for (let i = 0; i < productosMenoresA100.length; i++) {
-  console.log(
-    `${i + 1}.- Producto: ${productosMenoresA100[i].nombre} | Precio: ${
-      productosMenoresA100[i].precio
-    } | Categoría: ${productosMenoresA100[i].categoria}`
-  );
+// Mostrar productos inicialmente
+mostrarProductos(productos);
+filtroCategorias();
+mostrarEstadisticas();
+
+// Configurar filtros
+priceFilter.addEventListener("change", aplicarFiltros);
+categoryFilter.addEventListener("change", aplicarFiltros);
+
+// Función para mostrar productos
+function mostrarProductos(products) {
+  productsContainer.innerHTML = "";
+
+  products.forEach((producto) => {
+    productsContainer.innerHTML += `
+            <div class="product-card">
+                <h3>${producto.nombre}</h3>
+                <p class="price">Precio: $${producto.precio}</p>
+                <p class="category">Categoría: ${producto.categoria}</p>
+            </div>
+        `;
+  });
 }
 
-console.log(nombreProductos);
+// Función para configurar el filtro de categorías
+function filtroCategorias() {
+  // Obtener categorías únicas
+  //Los tres puntos son para convertir el set devuelta en un array
+  const categorias = [...new Set(productos.map((p) => p.categoria))];
+  /* 
+  De no usarse así, el código tendría que expandirse de la siguiente manera:
+  const setCategorias = new Set(productos.map(p => p.categoria));
+  const categorias = Array.from(setCategorias);
+   */
 
-//6- (Oppcional) Incluye alguno de los métodos faltantes (reduce, some, every, includes, etc.) con algún caso de uso en este ejemplo, usa tu creatividad.
-//Si llego a vender una unidad de cada producto, cuanto dinero tendría?
-const precioProductos = productos.map((productos) => productos.precio);
-const total = precioProductos.reduce((acum, num) => acum + num, 0);
+  // Agregar opciones al select
+  categorias.forEach((categoria) => {
+    categoryFilter.innerHTML += `
+            <option value="${categoria}">${categoria}</option>
+        `;
+  });
+}
 
-console.log("Si vendo una unidad de cada producto, dentría: $" + total);
-//Hay productos de electrónica?
-console.log(
-  "Necesito una computadora o un nuevo celular, hay algún prodcuto de este tipo? R=" +
-    productos.some((producto) => producto.categoria == "Electrónica")
-);
+// Función para aplicar filtros
+function aplicarFiltros() {
+  const priceValue = priceFilter.value;
+  const categoryValue = categoryFilter.value;
 
-//Todos los productos cuestan más de $100?
-console.log(
-  "¿Todos los productos cuestan más de $100? R=" +
-    productos.every((producto) => producto.precio > 100)
-);
+  //Creamos un nuevo array que almacenará sólo los productos filtrados
+  let filteredProducts = [...productos];
 
-//Venderán Zapatos?
-console.log(
-  "¿Venden zapatos en su tienda? R=" + nombreProductos.includes("Zapatos")
-);
+  // Aplicar filtro de precio
+  if (priceValue === "under100") {
+    filteredProducts = filteredProducts.filter((p) => p.precio < 100);
+  } else if (priceValue === "100to500") {
+    filteredProducts = filteredProducts.filter(
+      (p) => p.precio >= 100 && p.precio <= 500
+    );
+  } else if (priceValue === "over500") {
+    filteredProducts = filteredProducts.filter((p) => p.precio > 500);
+  }
+
+  // Aplicar filtro de categoría
+  if (categoryValue !== "all") {
+    filteredProducts = filteredProducts.filter(
+      (p) => p.categoria === categoryValue
+    );
+  }
+
+  // Mostrar productos filtrados
+  mostrarProductos(filteredProducts);
+}
+
+// Función para mostrar estadísticas
+function mostrarEstadisticas() {
+  document.getElementById("total-value").textContent = `$${productos.reduce(
+    (sum, p) => sum + p.precio,
+    0
+  )}`;
+  document.getElementById("electronics-available").textContent = productos.some(
+    (p) => p.categoria === "Electrónica"
+  )
+    ? "Sí"
+    : "No";
+  document.getElementById("all-over-100").textContent = productos.every(
+    (p) => p.precio > 100
+  )
+    ? "Sí"
+    : "No";
+  document.getElementById("shoes-available").textContent = productos.some(
+    (p) => p.nombre === "Zapatos"
+  )
+    ? "Sí"
+    : "No";
+}
