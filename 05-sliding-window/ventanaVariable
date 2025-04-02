@@ -1,0 +1,37 @@
+/* 
+En una ventana variable, el tamaño de la ventana puede cambiar dinámicamente durante la ejecución del algoritmo, dependiendo de una condición específica. 
+Esto es útil cuando se busca encontrar un subconjunto continuo que cumpla ciertas restricciones, como una suma objetivo, una cantidad de elementos únicos, o una secuencia válida.
+
+¿Cómo funciona?
+1. Se utiliza un puntero que marca el inicio de la ventana y otro que marca el final.
+2. Se expande el final de la ventana (puntero derecho) hasta que la condición deseada se cumpla.
+3. Cuando se cumple la condición, se intenta minimizar la ventana moviendo el inicio (puntero izquierdo) hacia adelante hasta que la condición deje de cumplirse.
+4. Durante este proceso, se registra el resultado óptimo.
+
+Ejemplo: Encuentra la subcadena más corta que tenga una suma mayor o igual a "target"
+Queremos encontrar la longitud mínima de una subcadena en un arreglo que tenga una suma mayor o igual a "target".
+
+*/
+
+const array = [2, 3, 1, 2, 4, 3];
+const target = 7;
+
+function ventanaVariable(array, target) {
+  let sumaActual = 0;
+  let inicio = 0;
+  let longitudMin = Infinity;
+
+  for (let fin = 0; fin < array.length; fin++) {
+    sumaActual += array[fin];
+
+    while (sumaActual >= target) {
+      longitudMin = Math.min(longitudMin, fin - inicio + 1);
+      sumaActual -= array[inicio];
+      inicio++;
+    }
+  }
+
+  return longitudMin === Infinity ? 0 : longitudMin;
+}
+
+console.log(ventanaVariable(array, target));
